@@ -5,9 +5,9 @@
 
 export type CategoryId =
   | "sobres-de-mesa"
-  | "taules"
-  | "cadires"
-  | "peus-de-parasol";
+  | "mesas"
+  | "sillas"
+  | "pies-de-parasol";
 
 export type BrandId =
   | "helcosol"
@@ -65,9 +65,9 @@ export const categories: Category[] = [
     brands: ["werzalit", "genmar"],
   },
   {
-    id: "taules",
+    id: "mesas",
     index: "02",
-    name: "Taules",
+    name: "Mesas",
     subtitle: "Mesas completas para hostelería y contract",
     intro:
       "Mesa completa: base, columna y tablero coordinados y homologados para uso profesional. Soluciones apilables, abatibles y de gran formato para banquetes, terrazas y espacios de restauración.",
@@ -81,9 +81,9 @@ export const categories: Category[] = [
     brands: ["genmar", "vela", "almar-garden"],
   },
   {
-    id: "cadires",
+    id: "sillas",
     index: "03",
-    name: "Cadires",
+    name: "Sillas",
     subtitle: "Sillas, sillones y taburetes de contract",
     intro:
       "Asientos pensados para el servicio: ligeros para el apilado, robustos para la rotación y coherentes en color con el resto del proyecto. Amplia carta de estructuras, tejidos y acabados.",
@@ -97,9 +97,9 @@ export const categories: Category[] = [
     brands: ["vela", "almar-garden", "genmar"],
   },
   {
-    id: "peus-de-parasol",
+    id: "pies-de-parasol",
     index: "04",
-    name: "Peus de parasol",
+    name: "Pies de parasol",
     subtitle: "Bases y contrapesos para sombra profesional",
     intro:
       "La pieza que sostiene todo el sistema de sombra. Bases dimensionadas por peso, formato y tipo de mástil, con acabados que aguantan la exposición permanente en terraza y zona de piscina.",
@@ -131,7 +131,7 @@ export const brands: Brand[] = [
       "Acabados para exposición permanente a la intemperie",
       "Suministro estable para grandes proyectos",
     ],
-    categories: ["peus-de-parasol"],
+    categories: ["pies-de-parasol"],
   },
   {
     id: "genmar",
@@ -148,7 +148,7 @@ export const brands: Brand[] = [
       "Sistemas de mesa y tablero coordinados",
       "Buena relación prestación / precio en contract",
     ],
-    categories: ["taules", "cadires", "sobres-de-mesa"],
+    categories: ["mesas", "sillas", "sobres-de-mesa"],
   },
   {
     id: "almar-garden",
@@ -165,7 +165,7 @@ export const brands: Brand[] = [
       "Colecciones coordinadas de exterior",
       "Confort y estética para hostelería de gama",
     ],
-    categories: ["taules", "cadires"],
+    categories: ["mesas", "sillas"],
     image: "/images/brands/almar-garden.jpg",
   },
   {
@@ -183,7 +183,7 @@ export const brands: Brand[] = [
       "Amplia carta de asiento y mesa",
       "Diseño italiano para hospitality",
     ],
-    categories: ["taules", "cadires"],
+    categories: ["mesas", "sillas"],
   },
   {
     id: "werzalit",
@@ -218,7 +218,7 @@ export const contact = {
   email: "JORDIRAWAL@KORACONCEPT.COM",
   emailHref: "mailto:jordirawal@koraconcept.com",
   address: "C/ Torrent 40, Santa Coloma de Farners, Girona",
-  region: "Catalunya · España",
+  region: "Cataluña · España",
   company: "Kora Concept",
   contactName: "Jordi Rawal",
   phone: "+34 972 877 588",
