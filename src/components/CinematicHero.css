@@ -1,0 +1,234 @@
+/* Cinematic scroll hero — sticky stage driven by scroll-linked CSS custom
+   properties (set via rAF in CinematicHero.tsx), not React re-renders.
+   Mirrors the scrub-and-reveal technique: tall spacer + sticky stage +
+   segmented easing per act. */
+
+.cinema-hero {
+  position: relative;
+  --mx: 0px;
+  --my: 0px;
+  --photo-scale: 1;
+  --photo-y: 0px;
+  --shade-top: 0.56;
+  --shade-mid: 0.34;
+  --shade-bottom: 0.3;
+  --title-y: 0px;
+  --title-scale: 1;
+  --title-opacity: 1;
+  --intro-y: 0px;
+  --intro-opacity: 1;
+  --rail-enter-x: 60vw;
+  --rail-visibility: hidden;
+  --rail-shift: 0px;
+  --controls-opacity: 0;
+}
+
+.cinema-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background: #1c1f16;
+}
+
+.cinema-photo {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  max-width: none;
+  object-fit: cover;
+  will-change: transform;
+  transform: translate3d(calc(var(--mx) * -1), var(--photo-y), 0)
+    scale(var(--photo-scale));
+}
+
+.cinema-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(24, 28, 18, var(--shade-top)) 0%,
+    rgba(24, 28, 18, var(--shade-mid)) 42%,
+    rgba(24, 28, 18, var(--shade-bottom)) 68%,
+    rgba(24, 28, 18, calc(var(--shade-bottom) + 0.28)) 100%
+  );
+}
+
+/* Absolutely positioned children ignore a static parent's padding (offsets
+   resolve against the padding *edge*, not the content edge) — so the hero
+   text repeats container-site's own left/right scale (24 / 40 / 64px at
+   the same md/lg breakpoints) to line up with the header logo and every
+   other section on the site. */
+.cinema-eyebrow,
+.cinema-title,
+.cinema-intro,
+.cinema-rail-wrap {
+  left: 24px;
+  right: 24px;
+}
+
+@media (min-width: 768px) {
+  .cinema-eyebrow,
+  .cinema-title,
+  .cinema-intro,
+  .cinema-rail-wrap {
+    left: 40px;
+    right: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cinema-eyebrow,
+  .cinema-title,
+  .cinema-intro,
+  .cinema-rail-wrap {
+    left: 64px;
+    right: 64px;
+  }
+}
+
+.cinema-eyebrow {
+  position: absolute;
+  top: clamp(96px, 15vh, 168px);
+  opacity: var(--title-opacity);
+  transform: translate3d(0, var(--title-y), 0);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cinema-title {
+  position: absolute;
+  top: clamp(126px, 20vh, 208px);
+  margin: 0;
+  color: #f2f0ea;
+  will-change: transform, opacity;
+  transform: translate3d(0, var(--title-y), 0) scale(var(--title-scale));
+  transform-origin: 0% 0%;
+  opacity: var(--title-opacity);
+  text-shadow: 0 6px 34px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.cinema-intro {
+  position: absolute;
+  bottom: clamp(140px, 24vh, 260px);
+  width: min(420px, calc(100vw - 48px));
+  will-change: transform, opacity;
+  transform: translate3d(0, var(--intro-y), 0);
+  opacity: var(--intro-opacity);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+.cinema-rail-wrap {
+  position: absolute;
+  bottom: clamp(28px, 8vh, 96px);
+  visibility: var(--rail-visibility);
+  transform: translate3d(var(--rail-enter-x), 0, 0);
+  will-change: transform;
+}
+
+.cinema-rail-track {
+  display: flex;
+  gap: 14px;
+  transform: translate3d(var(--rail-shift), 0, 0);
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.cinema-rail-track.is-jumping {
+  transition: none;
+}
+
+.cinema-card {
+  flex: 0 0 clamp(220px, 21vw, 268px);
+  padding: 20px 20px 22px;
+  border: 1px solid rgba(242, 240, 234, 0.16);
+  border-radius: 2px;
+  background: rgba(242, 240, 234, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #f2f0ea;
+  text-decoration: none;
+  transition:
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cinema-card:hover,
+.cinema-card.is-active {
+  border-color: rgba(242, 240, 234, 0.5);
+  background: rgba(242, 240, 234, 0.12);
+}
+
+.cinema-rail-controls {
+  position: absolute;
+  right: clamp(20px, 4vw, 64px);
+  bottom: calc(clamp(28px, 8vh, 96px) + 4px);
+  display: flex;
+  gap: 10px;
+  opacity: var(--controls-opacity);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.cinema-rail-controls.is-ready {
+  pointer-events: auto;
+}
+
+.cinema-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 240, 234, 0.3);
+  background: rgba(28, 31, 22, 0.55);
+  color: #f2f0ea;
+  cursor: pointer;
+  transition: border-color 0.4s ease, background 0.4s ease;
+}
+
+.cinema-nav-btn:hover {
+  border-color: rgba(242, 240, 234, 0.7);
+  background: rgba(28, 31, 22, 0.8);
+}
+
+.cinema-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  opacity: var(--title-opacity);
+  color: rgba(242, 240, 234, 0.55);
+}
+
+@media (max-width: 900px) {
+  .cinema-title {
+    top: clamp(150px, 24vh, 220px);
+  }
+  .cinema-intro {
+    bottom: clamp(190px, 30vh, 300px);
+  }
+  .cinema-rail-wrap {
+    bottom: 20px;
+  }
+  .cinema-card {
+    flex-basis: min(74vw, 260px);
+  }
+  .cinema-rail-controls {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-photo,
+  .cinema-title,
+  .cinema-intro,
+  .cinema-rail-wrap,
+  .cinema-rail-track,
+  .cinema-rail-controls {
+    transition: none !important;
+  }
+}
