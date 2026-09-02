@@ -12,11 +12,19 @@ import { cn } from "@/lib/utils";
  * the Marcas listing and brand detail pages. Falls back to the mono mark
  * (in ink) for brands without artwork on file (currently Almar Garden).
  */
+// Drop official artwork into /public/logos to replace a text wordmark.
+// SVG or transparent PNG/webp — it renders grayscale and turns full colour
+// on hover (the parent card carries `group`).
 const LOGO_FILES: Partial<Record<BrandId, string>> = {
   helcosol: "/logos/helcosol.png",
   genmar: "/logos/genmar.png",
   vela: "/logos/vela.png",
   werzalit: "/logos/werzalit.webp",
+  // gentas: "/logos/gentas.svg",
+  // severin: "/logos/severin.svg",
+  // freixotel: "/logos/freixotel.svg",
+  // zenith: "/logos/zenith.svg",
+  // iberlamit: "/logos/iberlamit.svg",
 };
 
 export default function BrandWordmark({
@@ -41,7 +49,7 @@ export default function BrandWordmark({
         <img
           src={logo}
           alt={id}
-          className="h-full w-auto max-h-12 object-contain"
+          className="h-full w-auto max-h-12 object-contain grayscale transition-[filter,opacity] duration-500 group-hover:grayscale-0"
         />
       </span>
     );
@@ -111,6 +119,37 @@ function mark(id: BrandId) {
         <span className="flex items-baseline text-[28px] font-extrabold italic tracking-tight">
           werzalit
           <span className="ml-[2px] text-[11px] not-italic">®</span>
+        </span>
+      );
+    case "gentas":
+      return (
+        <span className="flex items-baseline text-[26px] font-bold tracking-[0.02em]">
+          GENTA
+          <span className="ml-[1px]">Ş</span>
+        </span>
+      );
+    case "severin":
+      return (
+        <span className="text-[25px] font-semibold uppercase tracking-[0.14em]">
+          Severin
+        </span>
+      );
+    case "freixotel":
+      return (
+        <span className="text-[26px] font-bold lowercase tracking-tight">
+          freixotel
+        </span>
+      );
+    case "zenith":
+      return (
+        <span className="text-[24px] font-light uppercase tracking-[0.32em]">
+          Zenith
+        </span>
+      );
+    case "iberlamit":
+      return (
+        <span className="flex items-baseline text-[25px] font-semibold tracking-tight">
+          <span className="font-bold">Iber</span>lamit
         </span>
       );
   }

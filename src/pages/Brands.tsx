@@ -9,7 +9,7 @@ export default function Brands() {
   return (
     <>
       <PageHeader
-        eyebrow="Alianzas · 05 fabricantes"
+        eyebrow="Alianzas · 10 fabricantes"
         title="Marcas"
         intro="Representamos a fabricantes europeos de referencia. Cada uno, especialista en su terreno; juntos, un catálogo completo para hostelería y contract."
       />

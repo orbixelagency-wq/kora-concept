@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ArrowLink";
 const nav = [
   { to: "/productos", label: "Productos" },
   { to: "/marcas", label: "Marcas" },
+  { to: "/proyectos", label: "Proyectos" },
   { to: "/nosotros", label: "Nosotros" },
   { to: "/contacto", label: "Contacto" },
 ];

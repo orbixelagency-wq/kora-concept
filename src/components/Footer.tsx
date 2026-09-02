@@ -35,6 +35,14 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    to="/proyectos"
+                    className="link-underline text-sm text-paper/80"
+                  >
+                    Proyectos realizados
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
