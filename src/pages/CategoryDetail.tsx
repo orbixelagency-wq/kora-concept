@@ -41,6 +41,21 @@ export default function CategoryDetail() {
             <p className="text-lg leading-relaxed text-ink-soft">
               {category.intro}
             </p>
+            {category.subcategories.length > 0 && (
+              <div className="mt-8">
+                <span className="label">Subfamilias</span>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {category.subcategories.map((sub) => (
+                    <span
+                      key={sub}
+                      className="rounded-full border border-hairline px-3.5 py-1.5 text-[13px] font-medium text-ink-soft transition-colors duration-300 hover:border-olive hover:text-olive"
+                    >
+                      {sub}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </Reveal>
         </div>
       </section>

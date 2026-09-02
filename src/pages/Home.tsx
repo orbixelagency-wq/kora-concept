@@ -91,7 +91,7 @@ function CatalogueRows() {
           <div>
             <span className="label">El catálogo</span>
             <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-6xl">
-              Cuatro familias de producto
+              Seis familias de producto
             </h2>
           </div>
           <ArrowLink to="/productos" className="text-ink-soft">
@@ -157,8 +157,8 @@ function CatalogueRows() {
 const steps = [
   {
     n: "01",
-    t: "Escuchamos el proyecto",
-    d: "Tipología de espacio, estética, cantidades, plazos y presupuesto. Definimos el alcance real.",
+    t: "Atendemos su petición",
+    d: "Modelos, plazos y cantidades. Definimos el alcance real del pedido.",
   },
   {
     n: "02",
@@ -168,12 +168,12 @@ const steps = [
   {
     n: "03",
     t: "Presupuesto a medida",
-    d: "Una propuesta clara por volumen, con condiciones y logística cerradas. Sin sorpresas.",
+    d: "Una propuesta clara, con condiciones y logística cerradas. Sin sorpresas.",
   },
   {
     n: "04",
     t: "Suministro y entrega",
-    d: "Coordinamos fabricación, transporte y entrega para que el proyecto llegue completo y a tiempo.",
+    d: "Coordinamos fabricación, transporte y entrega para que el material pedido llegue completo, en perfecto estado y en el plazo acordado.",
   },
 ];
 

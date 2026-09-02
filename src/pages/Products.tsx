@@ -9,7 +9,7 @@ export default function Products() {
   return (
     <>
       <PageHeader
-        eyebrow="Catálogo · 04 familias"
+        eyebrow="Catálogo · 06 familias"
         title="Productos"
         intro="Todo lo que necesita para equipar un espacio de hostelería o contract, organizado por familia. Cada categoría se apoya en los fabricantes especialistas que representamos."
       />
@@ -45,6 +45,22 @@ export default function Products() {
                   <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
                     {c.intro}
                   </p>
+
+                  {c.subcategories.length > 0 && (
+                    <div className="mt-6">
+                      <span className="label">Subfamilias</span>
+                      <div className="mt-3 flex flex-wrap gap-x-2 gap-y-1.5">
+                        {c.subcategories.map((sub) => (
+                          <span
+                            key={sub}
+                            className="rounded-full bg-paper-2 px-3 py-1 text-[13px] font-medium text-ink-soft"
+                          >
+                            {sub}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-7 flex flex-wrap gap-2">
                     {c.brands.map((bid) => {
