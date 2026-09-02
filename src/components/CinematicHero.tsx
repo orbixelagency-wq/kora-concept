@@ -4,7 +4,7 @@ import { categories } from "@/data/catalogue";
 import { ButtonLink, ArrowLink } from "@/components/ArrowLink";
 import "@/components/CinematicHero.css";
 
-const SCROLL_RUNWAY = 2200; // px of extra scroll beyond 100vh
+const SCROLL_RUNWAY = 1400; // px of extra scroll beyond 100vh (shorter, scroll-tuned)
 
 const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 const smoothstep = (e0: number, e1: number, v: number) => {
@@ -113,11 +113,11 @@ export default function CinematicHero() {
 
       const s = state.smoothScroll;
       const progress = clamp(s / SCROLL_RUNWAY);
-      const introExit = smoothstep(50, 480, s);
-      const moodEnter = smoothstep(380, 1080, s);
-      const railEnterRaw = smoothstep(1280, 1980, s);
+      const introExit = smoothstep(30, 300, s);
+      const moodEnter = smoothstep(220, 720, s);
+      const railEnterRaw = smoothstep(720, 1220, s);
       const railEnter = Math.pow(railEnterRaw, 1.5);
-      const controlsEnter = smoothstep(1720, 2020, s);
+      const controlsEnter = smoothstep(1060, 1340, s);
 
       const mx = reduceMotion.current ? 0 : state.mouseX;
       const my = reduceMotion.current ? 0 : state.mouseY;
@@ -145,7 +145,7 @@ export default function CinematicHero() {
         (0.3 + moodEnter * 0.46).toFixed(3)
       );
 
-      section.style.setProperty("--title-y", `${(introExit * -120).toFixed(2)}px`);
+      section.style.setProperty("--title-y", `${(introExit * -150).toFixed(2)}px`);
       section.style.setProperty(
         "--title-scale",
         (1 - introExit * 0.05).toFixed(4)
@@ -227,24 +227,21 @@ export default function CinematicHero() {
         />
         <div className="cinema-shade" />
 
-        <div className="container-site relative h-full">
-          <span className="cinema-eyebrow label !text-paper/70">
-            Agentes comerciales · Distribución de mobiliario · Europa
-          </span>
-          <h1 className="cinema-title font-display text-[13vw] font-semibold leading-[0.94] tracking-[-0.02em] md:text-[7.4vw] lg:text-[100px]">
-            Resolvemos el
-            <br />
-            mobiliario de
-            <br />
-            su proyecto.
-          </h1>
-
-          <div className="cinema-intro">
-            <p className="text-base leading-relaxed text-paper/85">
-              Compramos y vendemos mobiliario de hostelería y contract a
-              nivel europeo. Del sobre de mesa a la base del parasol.
+        {/* Centered brand statement — exits upward on scroll */}
+        <div className="cinema-content">
+          <div className="cinema-lockup">
+            <span className="cinema-eyebrow label">
+              Agentes comerciales · Mobiliario contract · Europa
+            </span>
+            <h1 className="cinema-title">
+              <span className="cinema-brand-lead font-display">Kora</span>
+              <span className="cinema-brand-sub font-display">Concept</span>
+            </h1>
+            <p className="cinema-desc">
+              Compramos y vendemos mobiliario de hostelería y contract a nivel
+              europeo. Del sobre de mesa a la base del parasol.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-5">
+            <div className="cinema-cta">
               <ButtonLink to="/contacto" variant="light">
                 Solicitar presupuesto
               </ButtonLink>
@@ -253,36 +250,37 @@ export default function CinematicHero() {
               </ArrowLink>
             </div>
           </div>
+          <span className="cinema-scroll-cue label">Desliza para explorar</span>
+        </div>
 
-          <div className="cinema-rail-wrap">
-            <div ref={trackRef} className="cinema-rail-track">
-              {rail.map((c, i) => (
-                <Link
-                  key={`${c.id}-${i}`}
-                  to={`/productos/${c.id}`}
-                  ref={(el) => {
-                    cardRefs.current[i] = el;
-                  }}
-                  onMouseEnter={() => {
-                    const fn = (
-                      sectionRef.current as
-                        | (HTMLElement & { __kcSelectRail?: (i: number) => void })
-                        | null
-                    )?.__kcSelectRail;
-                    fn?.(i);
-                  }}
-                  className="cinema-card group"
-                >
-                  <span className="label !text-paper/50">{c.index}</span>
-                  <h3 className="mt-3 font-display text-xl font-medium leading-tight">
-                    {c.name}
-                  </h3>
-                  <span className="link-underline mt-3 inline-block text-xs font-medium text-paper/70">
-                    Ver familia
-                  </span>
-                </Link>
-              ))}
-            </div>
+        <div className="cinema-rail-wrap">
+          <div ref={trackRef} className="cinema-rail-track">
+            {rail.map((c, i) => (
+              <Link
+                key={`${c.id}-${i}`}
+                to={`/productos/${c.id}`}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+                onMouseEnter={() => {
+                  const fn = (
+                    sectionRef.current as
+                      | (HTMLElement & { __kcSelectRail?: (i: number) => void })
+                      | null
+                  )?.__kcSelectRail;
+                  fn?.(i);
+                }}
+                className="cinema-card group"
+              >
+                <span className="label !text-paper/50">{c.index}</span>
+                <h3 className="mt-3 font-display text-xl font-medium leading-tight">
+                  {c.name}
+                </h3>
+                <span className="link-underline mt-3 inline-block text-xs font-medium text-paper/70">
+                  Ver familia
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
 

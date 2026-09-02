@@ -1,7 +1,7 @@
 /* Cinematic scroll hero — sticky stage driven by scroll-linked CSS custom
    properties (set via rAF in CinematicHero.tsx), not React re-renders.
-   Mirrors the scrub-and-reveal technique: tall spacer + sticky stage +
-   segmented easing per act. */
+   Composition: a centered giant brand lockup that exits upward while the
+   terrace photo zooms and a rail of the four product families slides in. */
 
 .cinema-hero {
   position: relative;
@@ -57,23 +57,102 @@
   );
 }
 
-/* Absolutely positioned children ignore a static parent's padding (offsets
-   resolve against the padding *edge*, not the content edge) — so the hero
-   text repeats container-site's own left/right scale (24 / 40 / 64px at
-   the same md/lg breakpoints) to line up with the header logo and every
-   other section on the site. */
-.cinema-eyebrow,
-.cinema-title,
-.cinema-intro,
+/* ── Centered brand statement ─────────────────────────────── */
+.cinema-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 24px 0;
+  text-align: center;
+  pointer-events: none;
+}
+.cinema-content a,
+.cinema-content button {
+  pointer-events: auto;
+}
+
+.cinema-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform, opacity;
+  transform: translate3d(0, var(--title-y), 0) scale(var(--title-scale));
+  opacity: var(--title-opacity);
+}
+
+.cinema-eyebrow {
+  color: rgba(242, 240, 234, 0.72) !important;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cinema-title {
+  margin: clamp(14px, 2vh, 22px) 0 0;
+  color: #f2f0ea;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  text-shadow: 0 8px 44px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.cinema-brand-lead {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(74px, 20vw, 300px);
+}
+
+.cinema-brand-sub {
+  display: block;
+  margin-top: 0.05em;
+  font-weight: 300;
+  font-size: clamp(30px, 8.4vw, 126px);
+  letter-spacing: 0.012em;
+  color: rgba(242, 240, 234, 0.66);
+}
+
+.cinema-desc {
+  margin: clamp(20px, 3vh, 34px) auto 0;
+  max-width: 460px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(242, 240, 234, 0.85);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+.cinema-cta {
+  margin-top: clamp(22px, 3.4vh, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinema-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vh, 34px);
+  transform: translateX(-50%);
+  color: rgba(242, 240, 234, 0.55) !important;
+  opacity: var(--title-opacity);
+  pointer-events: none;
+}
+
+/* ── Product-family rail (slides in from the right) ───────── */
 .cinema-rail-wrap {
+  position: absolute;
   left: 24px;
   right: 24px;
+  bottom: clamp(28px, 8vh, 96px);
+  z-index: 3;
+  visibility: var(--rail-visibility);
+  transform: translate3d(var(--rail-enter-x), 0, 0);
+  will-change: transform;
 }
 
 @media (min-width: 768px) {
-  .cinema-eyebrow,
-  .cinema-title,
-  .cinema-intro,
   .cinema-rail-wrap {
     left: 40px;
     right: 40px;
@@ -81,51 +160,10 @@
 }
 
 @media (min-width: 1024px) {
-  .cinema-eyebrow,
-  .cinema-title,
-  .cinema-intro,
   .cinema-rail-wrap {
     left: 64px;
     right: 64px;
   }
-}
-
-.cinema-eyebrow {
-  position: absolute;
-  top: clamp(96px, 15vh, 168px);
-  opacity: var(--title-opacity);
-  transform: translate3d(0, var(--title-y), 0);
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-}
-
-.cinema-title {
-  position: absolute;
-  top: clamp(126px, 20vh, 208px);
-  margin: 0;
-  color: #f2f0ea;
-  will-change: transform, opacity;
-  transform: translate3d(0, var(--title-y), 0) scale(var(--title-scale));
-  transform-origin: 0% 0%;
-  opacity: var(--title-opacity);
-  text-shadow: 0 6px 34px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.cinema-intro {
-  position: absolute;
-  bottom: clamp(140px, 24vh, 260px);
-  width: min(420px, calc(100vw - 48px));
-  will-change: transform, opacity;
-  transform: translate3d(0, var(--intro-y), 0);
-  opacity: var(--intro-opacity);
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
-}
-
-.cinema-rail-wrap {
-  position: absolute;
-  bottom: clamp(28px, 8vh, 96px);
-  visibility: var(--rail-visibility);
-  transform: translate3d(var(--rail-enter-x), 0, 0);
-  will-change: transform;
 }
 
 .cinema-rail-track {
@@ -152,7 +190,8 @@
   text-decoration: none;
   transition:
     border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    background 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cinema-card:hover,
@@ -161,10 +200,15 @@
   background: rgba(242, 240, 234, 0.12);
 }
 
+.cinema-card:active {
+  transform: scale(0.98);
+}
+
 .cinema-rail-controls {
   position: absolute;
   right: clamp(20px, 4vw, 64px);
   bottom: calc(clamp(28px, 8vh, 96px) + 4px);
+  z-index: 3;
   display: flex;
   gap: 10px;
   opacity: var(--controls-opacity);
@@ -187,7 +231,7 @@
   background: rgba(28, 31, 22, 0.55);
   color: #f2f0ea;
   cursor: pointer;
-  transition: border-color 0.4s ease, background 0.4s ease;
+  transition: border-color 0.4s ease, background 0.4s ease, transform 0.3s ease;
 }
 
 .cinema-nav-btn:hover {
@@ -195,21 +239,16 @@
   background: rgba(28, 31, 22, 0.8);
 }
 
-.cinema-scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  opacity: var(--title-opacity);
-  color: rgba(242, 240, 234, 0.55);
+.cinema-nav-btn:active {
+  transform: scale(0.92);
 }
 
 @media (max-width: 900px) {
-  .cinema-title {
-    top: clamp(150px, 24vh, 220px);
+  .cinema-content {
+    padding-top: 80px;
   }
-  .cinema-intro {
-    bottom: clamp(190px, 30vh, 300px);
+  .cinema-desc {
+    max-width: 340px;
   }
   .cinema-rail-wrap {
     bottom: 20px;
@@ -224,8 +263,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cinema-photo,
-  .cinema-title,
-  .cinema-intro,
+  .cinema-lockup,
   .cinema-rail-wrap,
   .cinema-rail-track,
   .cinema-rail-controls {

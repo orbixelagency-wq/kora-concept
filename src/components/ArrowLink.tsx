@@ -58,15 +58,18 @@ export function ButtonLink({
   className?: string;
 }) {
   const styles = {
-    dark: "bg-ink text-paper hover:bg-olive",
-    light: "bg-paper text-ink hover:bg-paper-3",
-    olive: "bg-olive text-paper hover:bg-olive-2",
+    dark: "bg-ink text-paper hover:bg-olive active:bg-olive-2",
+    light: "bg-paper text-ink hover:bg-olive hover:text-paper active:bg-olive-2 active:text-paper",
+    olive: "bg-olive text-paper hover:bg-olive-2 active:bg-ink",
   }[variant];
   return (
     <Link
       to={to}
       className={cn(
-        "group inline-flex items-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-medium transition-colors duration-500",
+        "group inline-flex select-none items-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-medium",
+        "shadow-sm transition-[background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        "hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.97] active:shadow-sm",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-olive focus-visible:ring-offset-2 focus-visible:ring-offset-paper",
         styles,
         className
       )}
