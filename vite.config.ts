@@ -4,6 +4,8 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Proyecto servido desde https://<usuario>.github.io/kora-concept/
+  base: "/kora-concept/",
   plugins: [react()],
   resolve: {
     alias: {
